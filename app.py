@@ -3,9 +3,24 @@ from flask import Flask,render_template,request
 
 app=Flask(__name__)
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login ():
-    return render_template('login.html')
+    if request.method=="GET":
+        return render_template('login.html')
+    else:
+        return redirect(url_for('home'))
+
+@app.route("/register")
+def register():
+    if request.method=="GET":
+        return render_template('register.html')
+    else:
+        return redirect(url_for('home'))
+
+@app.route("/")
+@app.route("/home")
+def home():
+    return render_template('home.html')
 
 
 
