@@ -13,9 +13,18 @@ def login ():
 @app.route("/register")
 def register():
     if request.method=="GET":
-        return render_template('register.html')
+        return render_template('register.html', message = "")
     else:
-        return redirect(url_for('home'))
+        password = request.form["password"]
+        confirm = request.form["confirm_password"]
+        if (password == confirm):
+            username = request.form["username"]
+            name = request.form["name"]
+            #check if existing username
+            #add user
+            return redirect(url_for('home'))
+        else:
+            return render_template('register.html', message = "passwords don't match")
 
 @app.route("/")
 @app.route("/home")
