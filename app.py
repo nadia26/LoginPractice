@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
+import functions
 
-
+    
 app=Flask(__name__)
 
 @app.route("/login", methods=["GET", "POST"])
