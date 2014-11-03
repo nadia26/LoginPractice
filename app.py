@@ -8,6 +8,12 @@ app=Flask(__name__)
 def login ():
     if request.method=="GET":
         return render_template('login.html')
+    button = request.form["b"]
+    if button == "Login":
+        #check valid username & password
+        return  redirect(url_for('home'))
+    if button == "Register":
+        return redirect(url_for('register'))
     else:
         return redirect(url_for('home'))
 
@@ -18,7 +24,8 @@ def register():
     else:
         password = request.form["password"]
         confirm = request.form["confirm_password"]
-        if (password == confirm):
+        button = request.form["b"]
+        if (password == confirm and button == "Register"):
             username = request.form["username"]
             name = request.form["name"]
             #check if existing username
