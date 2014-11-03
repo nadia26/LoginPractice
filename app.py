@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,session
 import functions
 
     
@@ -10,8 +10,11 @@ def login ():
         return render_template('login.html')
     button = request.form["b"]
     if button == "Login":
-        #check valid username & password
-        return  redirect(url_for('home'))
+        username = request.form["username"]
+        password = request.form["password"]
+        if functions.authenticate(username,password):
+            session['username'] = username
+            return  redirect(url_for('home'))
     if button == "Register":
         return redirect(url_for('register'))
     else:
@@ -37,8 +40,15 @@ def register():
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    if 'username' not in session:
+        return render_template('home.html',name=None)
+    else:
+        return render_template('home.html',name=session['username'])
 
+@app.route("/logout")
+def logout():
+    session.pop("n",None)
+    return redirect("/")
 
 
 if __name__ == "__main__":
