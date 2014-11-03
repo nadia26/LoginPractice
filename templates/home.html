@@ -7,5 +7,10 @@
   </head>
   <body>
     <h1>Home Page</h1>
+    {% if name != None %}
+    <p>Welcome {{name}}</p>
+    {% else %}
+    <p>put login button here</p>
+    {%endif%}
   </body>
   </html>
