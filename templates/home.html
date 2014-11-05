@@ -7,10 +7,19 @@
   </head>
   <body>
     <h1>Home Page</h1>
+
     {% if name != None %}
-    <p>Welcome {{name}}</p>
+    <p>Welcome {{name}}</p><br>
+    Log out <a href="{{url_for('logout') }}">here</a>
+    <br><br>
+    As one of our valued users, you have access to: <br>
+    <a href="{{url_for('s1') }}">Special Page One</a> <br>
+    and
+    <br>
+    <a href="{{url_for('s2') }}">Special Page Two</a> <br>
     {% else %}
-    <p>put login button here</p>
+    Log in <a href="{{url_for('login') }}">here</a>
+
     {%endif%}
   </body>
   </html>

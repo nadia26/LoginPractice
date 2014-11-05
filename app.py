@@ -15,27 +15,28 @@ def login ():
         if functions.authenticate(username,password):
             session['username'] = username
             return  redirect(url_for('home'))
+        else:
+            return redirect(url_for('login'))
     if button == "Register":
         return redirect(url_for('register'))
-    else:
-        return redirect(url_for('home'))
 
 @app.route("/register")
 def register():
     if request.method=="GET":
         return render_template('register.html', message = "")
-    else:
+    elif request.form["b"] == "Register":
         password = request.form["password"]
         confirm = request.form["confirm_password"]
-        button = request.form["b"]
-        if (password == confirm and button == "Register"):
-            username = request.form["username"]
-            name = request.form["name"]
-            #check if existing username
-            #add user
-            return redirect(url_for('home'))
-        else:
+        if (password != confirm):
             return render_template('register.html', message = "passwords don't match")
+        else:
+            username = request.form["username"]
+            if functions.check(username):
+                return render_template('register.html', message = "Sorry, that username is already taken.")
+            else:
+                name = request.form["name"]           
+                functions.add_user(username, name, password)
+                return redirect(url_for('home'))
 
 @app.route("/")
 @app.route("/home")
@@ -44,6 +45,20 @@ def home():
         return render_template('home.html',name=None)
     else:
         return render_template('home.html',name=session['username'])
+
+@app.route("/s1")
+def s1():
+    if 'username' not in session:
+        return redirect(url_for('home'))
+    else:
+        return render_template('s1.html', name=session['username'])
+
+@app.route("/s2")
+def s2():
+    if 'username' not in session:
+        return redirect(url_for('home'))
+    else:
+        return render_template('s2.html', name=session['username'])
 
 @app.route("/logout")
 def logout():
