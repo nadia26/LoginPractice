@@ -15,7 +15,7 @@ def add_user(username, name, password):
 def authenticate(username, password):
     #check to see if username & password match, if they do, will return true
     x = db.people.find({'username':username})
-    if x['password'] == password:
+    if x[0]['password'] == password:
         return True
     else:
         return False

@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session
+from flask import Flask,render_template,request,session, redirect
 import functions
 
     
@@ -14,11 +14,11 @@ def login ():
         password = request.form["password"]
         if functions.authenticate(username,password):
             session['username'] = username
-            return  redirect(url_for('home'))
+            return  redirect('home')
         else:
             return redirect(url_for('login'))
     if button == "Register":
-        return redirect(url_for('register'))
+        return redirect('register')
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -35,7 +35,7 @@ def register():
             return render_template('register.html', message = "Sorry, that username is already taken.")
         name = request.form["name"]           
         functions.add_user(username, name, password)
-        return redirect(url_for('login'))
+        return redirect('login')
 
 @app.route("/")
 @app.route("/home")
@@ -48,23 +48,24 @@ def home():
 @app.route("/s1")
 def s1():
     if 'username' not in session:
-        return redirect(url_for('home'))
+        return redirect('home')
     else:
         return render_template('s1.html', name=session['username'])
 
 @app.route("/s2")
 def s2():
     if 'username' not in session:
-        return redirect(url_for('home'))
+        return redirect('home')
     else:
         return render_template('s2.html', name=session['username'])
 
 @app.route("/logout")
 def logout():
-    session.pop("n",None)
+    session.pop("username",None)
     return redirect("/")
 
 
 if __name__ == "__main__":
+    app.secret_key = "superdupersecret"
     app.debug=True
     app.run()
