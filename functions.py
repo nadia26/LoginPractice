@@ -19,4 +19,11 @@ def authenticate(username, password):
         return True
     else:
         return False
+
+def check(username):
+    x = db.people.find({'username':username})
+    if x.count() > 0:
+        return True
+    return False
+
         

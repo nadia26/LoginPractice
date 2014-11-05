@@ -20,23 +20,22 @@ def login ():
     if button == "Register":
         return redirect(url_for('register'))
 
-@app.route("/register")
+@app.route("/register", methods=["GET","POST"])
 def register():
     if request.method=="GET":
         return render_template('register.html', message = "")
-    elif request.form["b"] == "Register":
+    button = request.form["b"]
+    if button == "Register":
         password = request.form["password"]
         confirm = request.form["confirm_password"]
         if (password != confirm):
             return render_template('register.html', message = "passwords don't match")
-        else:
-            username = request.form["username"]
-            if functions.check(username):
-                return render_template('register.html', message = "Sorry, that username is already taken.")
-            else:
-                name = request.form["name"]           
-                functions.add_user(username, name, password)
-                return redirect(url_for('home'))
+        username = request.form["username"]
+        if functions.check(username):
+            return render_template('register.html', message = "Sorry, that username is already taken.")
+        name = request.form["name"]           
+        functions.add_user(username, name, password)
+        return redirect(url_for('login'))
 
 @app.route("/")
 @app.route("/home")
