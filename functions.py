@@ -13,8 +13,10 @@ def add_user(username, name, password):
     
 
 def authenticate(username, password):
-    pass
-#check to see if username & password match, if they do, will return true
-def check(username):
-    pass
-#if the given username exists, it will return true
+    #check to see if username & password match, if they do, will return true
+    x = db.people.find({'username':username})
+    if x['password'] == password:
+        return True
+    else:
+        return False
+        
