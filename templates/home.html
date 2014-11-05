@@ -17,8 +17,11 @@
     and
     <br>
     <a href="{{url_for('s2') }}">Special Page Two</a> <br>
+    
     {% else %}
-    Log in <a href="{{url_for('login') }}">here</a>
+    Log in <a href="{{url_for('login') }}">here</a><br>
+    or <br>
+    <a href="{{url_for('register') }}">Register</a>
 
     {%endif%}
   </body>
