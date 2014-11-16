@@ -1,10 +1,31 @@
 from flask import Flask,render_template,request,session, redirect
 import functions
+from functools import wraps
 
     
 app=Flask(__name__)
 
+
+def auth(f):
+    @wraps(f)
+    def inner(*args):
+        if 'username' not in session:
+            return redirect('home')
+        else:
+            return f(*args)
+    return inner
+
+def revauth(f):
+    @wraps(f)
+    def inner(*args):
+        if 'username' in session:
+            return redirect('home')
+        else:
+            return f(*args)
+    return inner
+
 @app.route("/login", methods=["GET", "POST"])
+@revauth
 def login ():
     if request.method=="GET":
         return render_template('login.html',logged=None,message="")
@@ -24,6 +45,7 @@ def login ():
         return redirect('register')
 
 @app.route("/register", methods=["GET","POST"])
+@revauth
 def register():
     if request.method=="GET":
         return render_template('register.html', message = "",logged=None)
@@ -54,18 +76,14 @@ def home():
 
 
 @app.route("/s1")
+@auth
 def s1():
-    if 'username' not in session:
-        return redirect('home')
-    else:
-        return render_template('s1.html', name=session['username'],logged=True,special=True)
+    return render_template('s1.html', name=session['username'],logged=True,special=True)
 
 @app.route("/s2")
+@auth
 def s2():
-    if 'username' not in session:
-        return redirect('home')
-    else:
-        return render_template('s2.html', name=session['username'],logged=True,special=True)
+    return render_template('s2.html', name=session['username'],logged=True,special=True)
 
 @app.route("/logout")
 def logout():
